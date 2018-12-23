@@ -1,9 +1,4 @@
 package com.haibin.calendarviewproject;
-<<<<<<< HEAD
-
-=======
-//??
->>>>>>> b686808e639e0f10c36f2664638d0e0bd60346f0
 import org.litepal.crud.DataSupport;
 
 public class City extends DataSupport {
@@ -47,9 +42,6 @@ public class City extends DataSupport {
     public void setProvinceId(int provinceId) {
         this.provinceId = provinceId;
     }
+}
 
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> b686808e639e0f10c36f2664638d0e0bd60346f0
+
