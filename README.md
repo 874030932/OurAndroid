@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # OurAndroid
 final project
 =======
+=======
+>>>>>>> b686808e639e0f10c36f2664638d0e0bd60346f0
 # CalenderView
 Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、任意日期拦截条件、自定义周起始等。Canvas绘制，极速性能、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，支持多点触控，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
@@ -334,4 +337,7 @@ public boolean isExpand();//是否展开了
 - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 - See the License for the specific language governing permissions and
   limitations under the License.
+<<<<<<< HEAD
 >>>>>>> commit
+=======
+>>>>>>> b686808e639e0f10c36f2664638d0e0bd60346f0
