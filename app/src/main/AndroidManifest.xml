@@ -4,6 +4,11 @@
     package="com.haibin.calendarviewproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <application
         android:name="org.litepal.LitePalApplication"
         tools:replace="android:allowBackup"
@@ -17,10 +22,15 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".MyReceiver">
+            <intent-filter>
+                <action android:name="MYALARMRECEIVER" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".meizu.MeiZuActivity" />
         <activity android:name=".index.IndexActivity" />
@@ -33,6 +43,9 @@
         <activity android:name=".custom.CustomActivity" />
         <activity android:name=".pager.ViewPagerActivity" />
         <activity android:name=".TestActivity" />
+        <activity android:name=".AddAction" />
+        <activity android:name=".ActionsOfDay" />
+        <activity android:name=".ActionInfo" />
     </application>
 
 </manifest>

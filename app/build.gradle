@@ -7,7 +7,7 @@ android {
     //buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.haibin.calendarviewproject"
-        minSdkVersion 15
+        minSdkVersion 19
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1

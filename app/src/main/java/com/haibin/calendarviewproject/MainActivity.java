@@ -2,6 +2,7 @@ package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.GravityCompat;
@@ -20,14 +21,10 @@ import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
-import com.haibin.calendarviewproject.custom.CustomActivity;
-import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuMonthView;
 import com.haibin.calendarviewproject.meizu.MeizuWeekView;
-import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
-import com.haibin.calendarviewproject.range.RangeActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
@@ -144,15 +141,14 @@ public class MainActivity extends BaseActivity implements
         });
 
 
-        drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
-        navButton=(ImageView) findViewById(R.id.iv_switch);
-        navButton.setOnClickListener(new View.OnClickListener(){
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (ImageView) findViewById(R.id.iv_switch);
+        navButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
 
 
         final DialogInterface.OnClickListener listener =
@@ -222,8 +218,6 @@ public class MainActivity extends BaseActivity implements
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
 
 
-
-
         sendRequestWithHttpURLConnection();//发送天气预报请求
 
     }
@@ -279,15 +273,15 @@ public class MainActivity extends BaseActivity implements
 
     protected void parseWeatherWithJSON(String response) {
         try {
-            JSONObject jsonObject=new JSONObject(response);
-            String resultcode=jsonObject.getString("resultcode");
-            if(resultcode.equals("200")){
-                JSONObject resultObject=jsonObject.getJSONObject("result");
-                JSONObject todayObject=resultObject.getJSONObject("today");
-                String city=todayObject.getString("city");
-                String week=todayObject.getString("week");
-                String temperature=todayObject.getString("temperature");
-                Log.d("MainActivity", "city="+city+"week="+week+"temp="+temperature);
+            JSONObject jsonObject = new JSONObject(response);
+            String resultcode = jsonObject.getString("resultcode");
+            if (resultcode.equals("200")) {
+                JSONObject resultObject = jsonObject.getJSONObject("result");
+                JSONObject todayObject = resultObject.getJSONObject("today");
+                String city = todayObject.getString("city");
+                String week = todayObject.getString("week");
+                String temperature = todayObject.getString("temperature");
+                Log.d("MainActivity", "city=" + city + "week=" + week + "temp=" + temperature);
                 citynametext.setText(city);
                 temperaturetext.setText(week);
                 windtext.setText(temperature);
@@ -505,8 +499,13 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onCalendarLongClick(Calendar calendar) {
-        Toast.makeText(this, "长按不选择日期\n" + getCalendarText(calendar), Toast.LENGTH_SHORT).show();
+    public void onCalendarLongClick(Calendar calendar) {//长按日期进入查看日程界面
+        Intent it = new Intent(MainActivity.this, ActionsOfDay.class);
+        String y = String.format("%04d", calendar.getYear());
+        String m = String.format("%02d", calendar.getMonth());
+        String d = String.format("%02d", calendar.getDay());
+        it.putExtra("date",y+"/"+m+"/"+d);
+        startActivity(it);
     }
 
     private static String getCalendarText(Calendar calendar) {
