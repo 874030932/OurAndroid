@@ -101,7 +101,13 @@ public class ChooseAreaFragment extends Fragment {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
-
+                    String cityname = selectedCity.getCityName();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("cityname", cityname);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
                 }
             }
         });

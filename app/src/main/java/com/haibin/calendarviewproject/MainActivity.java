@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements
         DialogInterface.OnClickListener,
         View.OnClickListener {
 
-
+    String selectedcityname;
     public DrawerLayout drawerLayout;
     private ImageView navButton;
 
@@ -125,7 +125,6 @@ public class MainActivity extends BaseActivity implements
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
         temperaturetext = (TextView) findViewById(R.id.temperature);                  //绑定控件
-        windText = (TextView) findViewById(R.id.wind);
         tipsText = (TextView) findViewById(R.id.tips);
         UVText = (TextView) findViewById(R.id.UV);
         humidityText = (TextView) findViewById(R.id.humidity);
@@ -134,6 +133,9 @@ public class MainActivity extends BaseActivity implements
         ecerciseText = (TextView) findViewById(R.id.exercise);
         wind_strengthText = (TextView) findViewById(R.id.wind_strength);
         locaText = (TextView) findViewById(R.id.loca);
+        windtext = (TextView) findViewById(R.id.wind);
+
+        selectedcityname = getIntent().getStringExtra("cityname");
 
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,6 +248,18 @@ public class MainActivity extends BaseActivity implements
 
     }
 
+    public String getcityname(){
+        Log.d("MainActivity", "操"+selectedcityname);
+        if(selectedcityname==null){
+            selectedcityname ="北京";
+            return selectedcityname;
+        }
+        else{
+
+            return selectedcityname;
+        }
+
+    }
     protected void sendRequestWithHttpURLConnection() {
         new Thread() {
             @Override
@@ -255,7 +269,9 @@ public class MainActivity extends BaseActivity implements
                 try {
                     // url = new
                     // URL("http://10.2.5.119:8080/Server/getData.json");
-                    String cityName = URLEncoder.encode("滨州", "utf-8");
+                    String selectcity = getcityname();
+
+                    String cityName = URLEncoder.encode(selectcity, "utf-8");
                     url = new URL(
                             "http://v.juhe.cn/weather/index?format=2&cityname="
                                     + cityName
@@ -560,6 +576,7 @@ public class MainActivity extends BaseActivity implements
         if (isClick) {
             Toast.makeText(this, getCalendarText(calendar), Toast.LENGTH_SHORT).show();
         }
+
 //        Log.e("lunar "," --  " + calendar.getLunarCalendar().toString() + "\n" +
 //        "  --  " + calendar.getLunarCalendar().getYear());
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
@@ -576,7 +593,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onCalendarLongClick(Calendar calendar) {
+    public void onCalendarLongClick(Calendar calendar) {      //长按
         Toast.makeText(this, "长按不选择日期\n" + getCalendarText(calendar), Toast.LENGTH_SHORT).show();
     }
 
