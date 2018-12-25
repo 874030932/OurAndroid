@@ -32,8 +32,10 @@ import com.haibin.calendarviewproject.simple.SimpleActivity;
 import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,9 +83,17 @@ public class MainActivity extends BaseActivity implements
 
     private AlertDialog mFuncDialog;
 
-    private TextView citynametext;
+    private TextView tipsText;
+    private TextView locaText;
     private TextView temperaturetext;
-    private TextView windtext;
+    private TextView windText;
+    private TextView UVText;
+    private TextView humidityText;
+    private TextView wind_strengthText;
+    private TextView washText;
+    private TextView travelText;
+    private TextView ecerciseText;
+
     public static final int SHOW_RESPONSE = 0;
     private Handler handler = new Handler() {
 
@@ -114,9 +124,17 @@ public class MainActivity extends BaseActivity implements
         mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
-        citynametext = (TextView) findViewById(R.id.cityname);
         temperaturetext = (TextView) findViewById(R.id.temperature);                  //绑定控件
-        windtext = (TextView) findViewById(R.id.wind);
+        windText = (TextView) findViewById(R.id.wind);
+        tipsText = (TextView) findViewById(R.id.tips);
+        UVText = (TextView) findViewById(R.id.UV);
+        humidityText = (TextView) findViewById(R.id.humidity);
+        washText = (TextView) findViewById(R.id.wash);
+        travelText = (TextView) findViewById(R.id.travel);
+        ecerciseText = (TextView) findViewById(R.id.exercise);
+        wind_strengthText = (TextView) findViewById(R.id.wind_strength);
+        locaText = (TextView) findViewById(R.id.loca);
+
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,18 +297,71 @@ public class MainActivity extends BaseActivity implements
 
     protected void parseWeatherWithJSON(String response) {
         try {
+            //System.out.print(response);
             JSONObject jsonObject=new JSONObject(response);
             String resultcode=jsonObject.getString("resultcode");
             if(resultcode.equals("200")){
                 JSONObject resultObject=jsonObject.getJSONObject("result");
+                JSONArray futureObject = resultObject.getJSONArray("future");
+                JSONObject skObject = resultObject.getJSONObject("sk");
                 JSONObject todayObject=resultObject.getJSONObject("today");
+                String wash = todayObject.getString("wash_index");
+                String travel = todayObject.getString("travel_index");
+                String exercise = todayObject.getString("exercise_index");
+                String wind_strength = skObject.getString("wind_strength");
                 String city=todayObject.getString("city");
                 String week=todayObject.getString("week");
+                String tips=todayObject.getString("dressing_advice");
+                String wind = todayObject.getString("wind");
+                String uv = todayObject.getString("uv_index");
                 String temperature=todayObject.getString("temperature");
+                String humidity = skObject.getString("humidity");
+                ImageView imageview = (ImageView) findViewById(R.id.icon_big);
+                if (todayObject.getString("weather").contains("云")){
+                    imageview.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_cloudy));
+                }else if (todayObject.getString("weather").contains("晴")){
+                    imageview.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_sunny));
+                }else if (todayObject.getString("weather").contains("雨")){
+                    imageview.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_rain));
+                }else if (todayObject.getString("weather").contains("霾")){
+                    imageview.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_haze));
+                }else {
+                    imageview.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_default));
+                }
                 Log.d("MainActivity", "city="+city+"week="+week+"temp="+temperature);
-                citynametext.setText(city);
-                temperaturetext.setText(week);
-                windtext.setText(temperature);
+                int count = futureObject.length();
+                int[] week_temp = {R.id.week_one, R.id.week_two, R.id.week_three, R.id.week_four, R.id.week_five, R.id.week_six, R.id.week_seven};
+                int[] img_temp = {R.id.icon_one, R.id.icon_two, R.id.icon_three, R.id.icon_four, R.id.icon_five, R.id.icon_six, R.id.icon_seven};
+                int[] temp={R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven};
+                for (int i = 0; i < 7; i++){
+                    TextView editText = (TextView) findViewById(temp[i]);
+                    TextView weekText = (TextView) findViewById(week_temp[i]);
+                    ImageView imageView = (ImageView) findViewById(img_temp[i]);
+                    JSONObject object = (JSONObject) futureObject.get(i);
+                    if (object.getString("weather").contains("云")){
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_cloudy));
+                    }else if (object.getString("weather").contains("晴")){
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_sunny));
+                    }else if (object.getString("weather").contains("雨")){
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_rain));
+                    }else if (object.getString("weather").contains("霾")){
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_haze));
+                    }else {
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.notify_ic_default));
+                    }
+                    weekText.setText(" " + object.getString("week"));
+                    editText.setText(object.getString("temperature"));
+                }
+                locaText.setText(city);
+                temperaturetext.setText(temperature);
+                windText.setText(wind);
+                tipsText.setText(tips);
+                UVText.setText(uv);
+                humidityText.setText(humidity);
+                wind_strengthText.setText(wind_strength);
+                washText.setText(wash);
+                ecerciseText.setText(exercise);
+                travelText.setText(travel);
             }
 
         } catch (JSONException e) {
